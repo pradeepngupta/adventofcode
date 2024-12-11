@@ -1,44 +1,32 @@
 package in.pradeep;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
+
+@Slf4j
 public class CeresSearch {
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
         // Read the actual input from a file
-//        Scanner scanner = new Scanner(Objects.requireNonNull(CeresSearch.class.getResourceAsStream("/ceres_search_day4_input.txt")));
-//                while (scanner.hasNextLine()) {
-//            String line = scanner.nextLine();
-//            list.add(line);
-//        }
-//        scanner.close();
-
-        String str = """
-                MMMSXXMASM
-                MSAMXMSMSA
-                AMXSXMAAMM
-                MSAMASMSMX
-                XMASAMXAMM
-                XXAMMXXAMA
-                SMSMSASXSS
-                SAXAMASAAA
-                MAMMMXMMMM
-                MXMXAXMASX
-                """;
-
-        list = new ArrayList<>(Arrays.asList(str.split("\n")));
-//
-//        System.out.println(list);
+        Scanner scanner = new Scanner(Objects.requireNonNull(CeresSearch.class.getResourceAsStream("/ceres_search_day4_input.txt")));
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            list.add(line);
+        }
+        scanner.close();
+        char[][] grid = list.stream().map(String::toCharArray).toArray(char[][]::new);
         String lookup = "XMAS";
 
-        char[][] grid = list.stream().map(String::toCharArray).toArray(char[][]::new);
-        int count = countLookup(grid, lookup);
-        System.out.println("The number of times " + lookup + " occurs is: " + count);
+        CeresSearch ceresSearch = new CeresSearch();
+        int count = ceresSearch.countLookup(grid, lookup);
+        log.info("The number of times {} occurs is: {}", lookup, count);
     }
 
-    private static int countLookup(char[][] grid, String lookup) {
+    public int countLookup(char[][] grid, String lookup) {
         int count = 0;
         int rows = grid.length;
         int cols = grid[0].length;
@@ -54,7 +42,7 @@ public class CeresSearch {
         return count;
     }
 
-    private static int searchAllDirections(char[][] grid, String lookup, int row, int col) {
+    private int searchAllDirections(char[][] grid, String lookup, int row, int col) {
         int count = 0;
         int[][] directions = {
                 {0, 1}, {1, 0}, {1, 1}, {1, -1},  // right, down, diagonal down-right, diagonal down-left
@@ -70,7 +58,7 @@ public class CeresSearch {
         return count;
     }
 
-    private static boolean checkDirection(char[][] grid, String lookup, int row, int col, int dRow, int dCol) {
+    private boolean checkDirection(char[][] grid, String lookup, int row, int col, int dRow, int dCol) {
         int rows = grid.length;
         int cols = grid[0].length;
 
