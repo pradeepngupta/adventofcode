@@ -1,7 +1,10 @@
 package in.pradeep;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.*;
 
+@Slf4j
 public class HistorianHysteria {
     public static void main(String[] args) {
 
@@ -13,15 +16,17 @@ public class HistorianHysteria {
         List<Integer> leftList = lists.get(0);
         List<Integer> rightList = lists.get(1);
 
-        // Calculate and print the total distance
-        int totalDistance = calculateTotalDistance(leftList, rightList);
-        System.out.println("Actual puzzle total distance: " + totalDistance);
+        HistorianHysteria historianHysteria = new HistorianHysteria();
 
-        int similarityScore = calculateSimilarityScore(leftList, rightList);
-        System.out.println("Actual puzzle similarityScore: " + similarityScore);
+        // Calculate and print the total distance
+        int totalDistance = historianHysteria.calculateTotalDistance(leftList, rightList);
+        log.info("Actual puzzle total distance: {}", totalDistance);
+
+        int similarityScore = historianHysteria.calculateSimilarityScore(leftList, rightList);
+        log.info("Actual puzzle similarityScore: {}", similarityScore);
     }
 
-    private static int calculateSimilarityScore(List<Integer> leftList, List<Integer> rightList) {
+    public int calculateSimilarityScore(List<Integer> leftList, List<Integer> rightList) {
         int similarityScore = 0;
 
         for (int l : leftList) {
@@ -31,7 +36,7 @@ public class HistorianHysteria {
         return similarityScore;
     }
 
-    private static int calculateTotalDistance(List<Integer> leftList, List<Integer> rightList) {
+    public int calculateTotalDistance(List<Integer> leftList, List<Integer> rightList) {
         // sort the lists
         Collections.sort(leftList);
         Collections.sort(rightList);

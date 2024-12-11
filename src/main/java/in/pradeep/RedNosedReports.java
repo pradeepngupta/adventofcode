@@ -1,34 +1,44 @@
 package in.pradeep;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
+@Slf4j
 public class RedNosedReports {
     public static void main(String[] args) {
         // Read the actual input from a file
         Scanner scanner = new Scanner(Objects.requireNonNull(RedNosedReports.class.getResourceAsStream("/red_nosed_report_day2_input.txt")));
         List<List<Integer>> reports = getReports(scanner);
 
+        RedNosedReports redNosedReports = new RedNosedReports();
+
         int safeReportCount = 0;
         int damplerSafeReportCount = 0;
         for (List<Integer> report: reports)
         {
-            if(isSafe(report)) {
+            if(redNosedReports.isSafe(report)) {
                 safeReportCount ++;
-            } else if(canBeMadeSafe(report)) {
+            } else if(redNosedReports.canBeMadeSafe(report)) {
                 damplerSafeReportCount++;
             }
         }
-        System.out.println("Number of Safe Report: " + safeReportCount + ", together with DamplerSafe: " + (safeReportCount + damplerSafeReportCount));
+        log.info("Number of Safe Report: {}, together with DamplerSafe: {}", safeReportCount, safeReportCount + damplerSafeReportCount);
     }
 
     // Function to check if a report can be made safe by removing one level
-    public static boolean canBeMadeSafe(List<Integer> report) {
+    public  boolean canBeMadeSafe(List<Integer> report) {
         for (int i = 0; i < report.size(); i++) {
-            List<Integer> modifiedReport = new ArrayList<>(report);
-            modifiedReport.remove(i);
+            int finalI = i;
+            List<Integer> modifiedReport =  IntStream.range(0, report.size())
+                    .filter(index -> finalI != index)
+                    .mapToObj(report::get)
+                    .toList();
+
             if (isSafe(modifiedReport)) {
                 return true;
             }
@@ -37,7 +47,7 @@ public class RedNosedReports {
     }
 
     // Function to check if a single report is safe
-    public static boolean isSafe(List<Integer> report) {
+    public  boolean isSafe(List<Integer> report) {
         if (report.size() < 2) {
             return true; // A report with 0 or 1 level is considered safe
         }
